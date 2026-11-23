@@ -1,0 +1,150 @@
+@import "tailwindcss";
+
+/* Modo escuro ligado pela classe .dark no <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Paleta do Revela: papel quente, tinta escura e um laranja de "luz de revelação" */
+:root {
+    --c-fundo: #f6f2ec;
+    --c-superficie: #fffdfa;
+    --c-elevada: #ffffff;
+    --c-tinta: #1c1917;
+    --c-suave: #6b625a;
+    --c-apagada: #a39a90;
+    --c-linha: #e7e0d6;
+    --c-realce: #d9542b;
+    --c-realce-forte: #b8431f;
+    --c-realce-claro: #fbe7dd;
+}
+
+.dark {
+    --c-fundo: #121110;
+    --c-superficie: #1a1917;
+    --c-elevada: #22201d;
+    --c-tinta: #f3eee7;
+    --c-suave: #b3aaa0;
+    --c-apagada: #786f66;
+    --c-linha: #2e2b27;
+    --c-realce: #ee7448;
+    --c-realce-forte: #f48a63;
+    --c-realce-claro: #3a2219;
+}
+
+@theme inline {
+    --color-fundo: var(--c-fundo);
+    --color-superficie: var(--c-superficie);
+    --color-elevada: var(--c-elevada);
+    --color-tinta: var(--c-tinta);
+    --color-suave: var(--c-suave);
+    --color-apagada: var(--c-apagada);
+    --color-linha: var(--c-linha);
+    --color-realce: var(--c-realce);
+    --color-realce-forte: var(--c-realce-forte);
+    --color-realce-claro: var(--c-realce-claro);
+    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+    --font-display: "Fraunces", Georgia, serif;
+}
+
+html {
+    color-scheme: light;
+}
+html.dark {
+    color-scheme: dark;
+}
+
+body {
+    margin: 0;
+    background: var(--c-fundo);
+    color: var(--c-tinta);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+    background: var(--c-realce);
+    color: white;
+}
+
+/* Componentes reutilizados em todas as telas */
+@utility btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all duration-150 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+@layer components {
+    .btn-primario {
+        @apply btn bg-tinta text-fundo hover:opacity-90;
+    }
+    .btn-realce {
+        @apply btn bg-realce text-white hover:bg-realce-forte;
+    }
+    .btn-secundario {
+        @apply btn border border-linha bg-superficie text-tinta hover:border-apagada;
+    }
+    .btn-fantasma {
+        @apply btn text-suave hover:bg-linha/60 hover:text-tinta;
+    }
+    .btn-perigo {
+        @apply btn bg-red-600 text-white hover:bg-red-700;
+    }
+    .btn-icone {
+        @apply inline-flex h-9 w-9 items-center justify-center rounded-full text-suave transition-colors hover:bg-linha/70 hover:text-tinta;
+    }
+    .campo {
+        @apply w-full rounded-xl border border-linha bg-elevada px-3.5 py-2.5 text-sm text-tinta outline-none transition placeholder:text-apagada focus:border-realce focus:ring-4 focus:ring-realce/15;
+    }
+    .rotulo {
+        @apply mb-1.5 block text-xs font-medium uppercase tracking-wider text-suave;
+    }
+    .cartao {
+        @apply rounded-2xl border border-linha bg-superficie;
+    }
+    .titulo-pagina {
+        @apply font-display text-3xl font-medium tracking-tight text-tinta sm:text-4xl;
+    }
+    .chip {
+        @apply inline-flex items-center gap-1 rounded-full border border-linha bg-superficie px-3 py-1 text-xs font-medium text-suave transition-colors hover:border-apagada hover:text-tinta;
+    }
+    .chip-ativo {
+        @apply border-realce bg-realce-claro text-realce-forte hover:border-realce hover:text-realce-forte;
+    }
+}
+
+/* Entrada suave das fotos na grade */
+@keyframes surgir {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.99);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+.surgir {
+    animation: surgir 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes aparecer {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+.aparecer {
+    animation: aparecer 0.2s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .surgir,
+    .aparecer {
+        animation: none;
+    }
+}
+
+/* Barra de rolagem discreta */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--c-linha) transparent;
+}
